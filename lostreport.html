@@ -132,7 +132,7 @@ const modalDetails = document.getElementById('modalDetails');
 const closeModalBtn = document.getElementById('closeModal');
 const submitAnother = document.getElementById('submitAnother');
 
-const JSON_URL = "https://script.google.com/macros/s/AKfycbzcaarGQM3riZ5RVnsVBhzHytK9PSCaJwUe2C0YnThymvw_9SJcFNI7HN2k7yLIi9fJ/exec"; // Apps Script URL
+const JSON_URL = "https://script.google.com/macros/s/AKfycbzcaarGQM3riZ5RVnsVBhzHytK9PSCaJwUe2C0YnThymvw_9SJcFNI7HN2k7yLIi9fJ/exec";
 
 async function loadReports() {
   try {
@@ -149,7 +149,7 @@ async function loadReports() {
       const card = document.createElement('div');
       card.className = 'report-card';
 
-      // Show only Report #, Email, What in grid view
+      // Show Report #, Email, What directly in grid
       const emailVal = data.Email && data.Email.trim() !== "" ? data.Email : "-";
       const whatVal = data.What && data.What.trim() !== "" ? data.What : "-";
 
