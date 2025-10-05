@@ -4,8 +4,11 @@
   <title>Lost Reports - Bravehearts Lost & Found</title>
   <link rel="stylesheet" href="lostreport.css">
   <style>
-    body { font-family: Arial, sans-serif; background:#f2f2f2; margin:0; padding:0;}
-    .card { background:white; max-width:900px; margin:50px auto; padding:20px; border-radius:12px; box-shadow:0 4px 15px rgba(0,0,0,0.2);}
+    body { font-family: Arial, sans-serif; background:#f2f2f2; margin:0; padding:0; }
+    .video-background { position:fixed; top:0; left:0; width:100%; height:100%; z-index:-2; overflow:hidden; }
+    .video-background video { width:100%; height:100%; object-fit:cover; }
+    .overlay { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.3); z-index:-1; }
+    .card { background:white; max-width:900px; margin:50px auto; padding:20px; border-radius:12px; box-shadow:0 4px 15px rgba(0,0,0,0.2); position:relative; z-index:1; }
     h2 { text-align:center; color:#13007d; }
     .grid-container { display:grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap:15px; margin-top:20px; }
     .report-card { background:#f9f9f9; border:1px solid #ccc; border-radius:8px; padding:10px; cursor:pointer; transition:0.2s; }
@@ -18,6 +21,13 @@
 </head>
 <body>
 
+<div class="video-background">
+  <video autoplay muted loop playsinline>
+    <source src="video/FAITH.mp4" type="video/mp4">
+  </video>
+</div>
+<div class="overlay"></div>
+
 <div class="card">
   <h2>All Submitted Lost Reports</h2>
   <div id="summary" class="grid-container">Loading reports...</div>
@@ -28,7 +38,7 @@
 const summaryDiv = document.getElementById('summary');
 const submitAnother = document.getElementById('submitAnother');
 
-const JSON_URL = "https://script.google.com/macros/s/AKfycbzL-RmRF9eo66tZNb1gf0N2oCDUrg6autPT8wW7w76CeDbGhrKyruq_EutSd4JMoLY_/exec"; // Palitan ng Web App URL
+const JSON_URL = "https://script.google.com/macros/s/AKfycbzL-RmRF9eo66tZNb1gf0N2oCDUrg6autPT8wW7w76CeDbGhrKyruq_EutSd4JMoLY_/exec";
 
 async function loadReports() {
   try {
@@ -47,9 +57,8 @@ async function loadReports() {
 
       let viewButton = '';
       if(data.Photo){
-        // Kung nakalagay na full URL (https://drive.google.com/...), gamitin ito
+        // Gawin full Drive link kung puro ID lang
         let driveLink = data.Photo;
-        // Kung puro file ID lang, gawin full Drive link
         if(!driveLink.includes("http")){
           driveLink = "https://drive.google.com/file/d/" + data.Photo + "/view?usp=sharing";
         }
@@ -71,7 +80,6 @@ async function loadReports() {
   }
 }
 
-// Submit another report
 submitAnother.addEventListener('click', () => window.location.href = 'index.html');
 
 loadReports();
@@ -79,4 +87,3 @@ loadReports();
 
 </body>
 </html>
-
