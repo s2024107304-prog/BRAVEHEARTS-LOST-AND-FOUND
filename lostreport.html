@@ -149,12 +149,15 @@ async function loadReports() {
       const card = document.createElement('div');
       card.className = 'report-card';
 
-      // Grid view: only Report #, Email, What
-      card.innerHTML = `<div class="report-title">Report #${idx+1}</div>
-                        <div class="report-summary"><strong>Email:</strong> ${data.Email || '-'}</div>
-                        <div class="report-summary"><strong>What:</strong> ${data.What || '-'}</div>`;
+      // Show only Report #, Email, What in grid view
+      const emailVal = data.Email && data.Email.trim() !== "" ? data.Email : "-";
+      const whatVal = data.What && data.What.trim() !== "" ? data.What : "-";
 
-      // Click card to show modal with full info
+      card.innerHTML = `<div class="report-title">Report #${idx+1}</div>
+                        <div class="report-summary"><strong>Email:</strong> ${emailVal}</div>
+                        <div class="report-summary"><strong>What:</strong> ${whatVal}</div>`;
+
+      // Click to show full info in modal
       card.addEventListener('click', () => {
         let html = `<h3>Report #${idx+1}</h3>`;
         for(const key in data){
