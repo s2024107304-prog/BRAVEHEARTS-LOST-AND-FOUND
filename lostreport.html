@@ -51,11 +51,12 @@ const modalDetails = document.getElementById('modalDetails');
 const closeModalBtn = document.getElementById('closeModal');
 const submitAnother = document.getElementById('submitAnother');
 
-const JSON_URL = "https://script.google.com/macros/s/AKfycby_pIT46xfDKt9P7jDTsJ74-K3gaWNIdgBAM29m7D9yQQO_m5NQMEB8e1PEdTqnt5LI/exec"; // <-- Apps Script Web App URL
+// <-- ilagay dito Apps Script Web App URL (kung saan naka-deploy)
+const JSON_URL = "https://script.google.com/macros/s/AKfycbwOsUurWvuIrzsbT90e_q9la59mwgVJg2arp7dnLh_xAQFK6jF0FlNDT0_GLtsPWvV8/exec";
 
 let reports = [];
 
-// Fetch reports from Google Sheets via Apps Script
+// Load reports
 async function loadReports() {
   try {
     const res = await fetch(JSON_URL);
@@ -71,10 +72,10 @@ async function loadReports() {
       const card = document.createElement('div');
       card.className = 'report-card';
 
-      // ✅ Kunin ang image URL at gawing <img> tag
+      // Convert photo URL to image
       let imgHTML = '';
-      if(data["Photo Url"]){
-        imgHTML = `<img src="${data["Photo Url"]}" alt="Lost Item" style="max-width:100%; border:2px solid #13007d; border-radius:8px;">`;
+      if(data["Photo URL"]){
+        imgHTML = `<img src="${data["Photo URL"]}" alt="Lost Item" style="max-width:100%; border:2px solid #13007d; border-radius:8px;">`;
       }
 
       card.innerHTML = `<div class="report-title">Report #${idx+1}</div>
@@ -82,10 +83,9 @@ async function loadReports() {
                         ${imgHTML}`;
 
       card.addEventListener('click', () => {
-        // Modal details
         let html = `<h3>Report #${idx+1}</h3><ul>`;
         for(const key in data){
-          if(key === "Photo Url" && data[key]){
+          if(key === "Photo URL" && data[key]){
             html += `<li><strong>Photo:</strong><br><img src="${data[key]}" style="max-width:100%;"></li>`;
           } else {
             html += `<li><strong>${key}:</strong> ${data[key]}</li>`;
@@ -112,7 +112,6 @@ window.addEventListener('click', e => { if(e.target === modal) modal.style.displ
 // Submit another report
 submitAnother.addEventListener('click', () => window.location.href = 'index.html');
 
-// Load reports on page load
 loadReports();
 </script>
 
