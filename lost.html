@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Lost Items - Bravehearts Lost & Found</title>
+  <link rel="stylesheet" type="text/css" href="lost.css">
+</head>
+<body>
+  <div class="video-background">
+    <video autoplay muted loop playsinline>
+      <source src="video/FAITH.mp4" type="video/mp4">
+    </video>
+  </div>
+
+  <div class="card">
+    <!-- Back button at the top -->
+    <button id="backBtn" style="margin-bottom:15px; padding:8px 16px; border-radius:8px; border:none; background:#13007d; color:#fff; font-weight:bold; cursor:pointer;">&larr; Back</button>
+
+    <h2>Lost Item Report</h2>
+    <p class="note">Fill in the fields and take a picture of the item.</p>
+
+    <form id="lostForm">
+      <label for="email">First Asia Email</label>
+      <input id="email" name="email" type="email" placeholder="s20xxxxxxxx@firstasia.edu.ph" required />
+
+      <div class="row">
+        <div>
+          <label for="what">What (Anong nawala?)</label>
+          <input id="what" name="what" type="text" placeholder="Ex: wallet, phone" required />
+        </div>
+        <div>
+          <label for="when">When (Kailan nawala?)</label>
+          <input id="when" name="when" type="datetime-local" required />
+        </div>
+      </div>
+
+      <div class="row">
+        <div>
+          <label for="where">Where (Saan nawala?)</label>
+          <input id="where" name="where" type="text" placeholder="Ex: 3rd floor hallway" />
+        </div>
+        <div>
+          <label for="who">Who (Sino ang may-ari?)</label>
+          <input id="who" name="who" type="text" placeholder="Optional" />
+        </div>
+      </div>
+
+      <label for="otherw">More Info</label>
+      <input id="otherw" name="otherw" type="text" placeholder="Ex: Contains an ID card inside" />
+
+      <label for="description">Description (Detalye)</label>
+      <textarea id="description" name="description" rows="4" placeholder="Unique characteristics of the item (color, brand, damage, etc.)"></textarea>
+
+      <!-- Camera live preview -->
+      <div class="camera-container">
+        <video id="camera" autoplay playsinline></video>
+      </div>
+      <button type="button" id="takePic">Take Picture</button>
+      <canvas id="snapshot" style="display:none;"></canvas>
+
+      <!-- Hidden file/photo field -->
+      <input type="hidden" id="photo_base64" name="photo_base64">
+
+      <div class="preview" id="preview"></div>
+
+      <button type="submit">Send Report</button>
+    </form>
+
+    <!-- Summary + action buttons -->
+    <div id="summary" style="display:none; margin-top:20px; text-align:left;"></div>
+    <div style="display:flex; justify-content:center; gap:15px; margin-top:10px;">
+      <button id="submitAgain" style="display:none; padding:12px 20px; border-radius:8px; border:none; background:#13007d; color:#fff; font-weight:bold; cursor:pointer;">Submit Another Report</button>
+      <button id="goToLostReport" style="display:none; padding:12px 20px; border-radius:8px; border:none; background:#13007d; color:#fff; font-weight:bold; cursor:pointer;">View All Reports</button>
+    </div>
+  </div>
+
+<script>
+const form = document.getElementById('lostForm');
+const camera = document.getElementById('camera');
+const takePic = document.getElementById('takePic');
+const snapshot = document.getElementById('snapshot');
+const preview = document.getElementById('preview');
+const photoBase64Input = document.getElementById('photo_base64');
+const summary = document.getElementById('summary');
+const submitAgain = document.getElementById('submitAgain');
+const goToLostReport = document.getElementById('goToLostReport');
+const backBtn = document.getElementById('backBtn');
+
+// Back button functionality
+backBtn.addEventListener('click', () => {
+  window.history.back(); // go to previous page
+});
+
+// Open camera
+navigator.mediaDevices.getUserMedia({ video: true })
+  .then(stream => { camera.srcObject = stream; })
+  .catch(err => console.error('Camera error:', err));
+
+// Take picture
+takePic.addEventListener('click', () => {
+  const ctx = snapshot.getContext('2d');
+  snapshot.width = camera.videoWidth;
+  snapshot.height = camera.videoHeight;
+  ctx.drawImage(camera, 0, 0);
+  const dataUrl = snapshot.toDataURL('image/png');
+  photoBase64Input.value = dataUrl;
+  preview.innerHTML = `<img src="${dataUrl}" alt="Snapshot" style="max-width:220px; border:3px solid #13007d; border-radius:8px;">`;
+});
+
+// Submit -> show summary on same page
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const fd = new FormData(form);
+  const report = {};
+  ['email','what','when','where','who','otherw','description'].forEach(k => {
+    report[k] = fd.get(k) || '';
+  });
+  if(fd.get('photo_base64')) report['photo'] = fd.get('photo_base64');
+
+  let reports = JSON.parse(localStorage.getItem('lostReports') || '[]');
+  reports.push(report);
+  localStorage.setItem('lostReports', JSON.stringify(reports));
+
+  // Hide form
+  form.style.display = 'none';
+  preview.innerHTML = '';
+
+  // Show summary
+  let html = "<h2>Report Summary</h2><ul>";
+  for(const key in report){
+    if(key === 'photo'){
+      html += `<li><strong>Photo:</strong><br><img src="${report[key]}" style="max-width:300px; border:2px solid #13007d; border-radius:8px;"></li>`;
+    } else {
+      html += `<li><strong>${key}:</strong> ${report[key]}</li>`;
+    }
+  }
+  html += "</ul><p style='color:green;font-weight:bold;'>Report sent. Thank you!</p>";
+  summary.innerHTML = html;
+  summary.style.display = 'block';
+  submitAgain.style.display = 'inline-block';
+  goToLostReport.style.display = 'inline-block';
+});
+
+// Redirect buttons
+submitAgain.addEventListener('click', () => window.location.href = "prototype.html");
+goToLostReport.addEventListener('click', () => window.location.href = "lostreport.html");
+</script>
+</body>
+</html>
