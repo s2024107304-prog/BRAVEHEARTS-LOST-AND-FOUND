@@ -149,10 +149,10 @@ async function loadReports() {
       const card = document.createElement('div');
       card.className = 'report-card';
 
-      // Basic info only
+      // Grid view: only Report #, Email, What
       card.innerHTML = `<div class="report-title">Report #${idx+1}</div>
-                        <div class="report-summary"><strong>What:</strong> ${data.What || '-'}</div>
-                        <div class="report-summary"><strong>When:</strong> ${data.When || '-'}</div>`;
+                        <div class="report-summary"><strong>Email:</strong> ${data.Email || '-'}</div>
+                        <div class="report-summary"><strong>What:</strong> ${data.What || '-'}</div>`;
 
       // Click card to show modal with full info
       card.addEventListener('click', () => {
