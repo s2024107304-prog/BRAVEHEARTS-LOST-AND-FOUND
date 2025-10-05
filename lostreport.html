@@ -1,23 +1,25 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Lost Items - Bravehearts Lost & Found</title>
-  <link rel="stylesheet" type="text/css" href="lost.css">
+  <title>Lost Reports - Bravehearts Lost & Found</title>
+  <link rel="stylesheet" href="lostreport.css">
   <style>
     body { font-family: Arial, sans-serif; background:#f2f2f2; margin:0; padding:0;}
     .video-background { position:fixed; top:0; left:0; width:100%; height:100%; z-index:-1; overflow:hidden; }
     .video-background video { width:100%; height:100%; object-fit:cover; }
-    .card { background:white; max-width:600px; margin:50px auto; padding:20px; border-radius:12px; box-shadow:0 4px 15px rgba(0,0,0,0.2);}
+    .overlay { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.3); z-index:-1; }
+    .card { background:white; max-width:900px; margin:50px auto; padding:20px; border-radius:12px; box-shadow:0 4px 15px rgba(0,0,0,0.2);}
     h2 { text-align:center; color:#13007d; }
-    label { display:block; margin-top:12px; font-weight:bold; }
-    input, textarea { width:100%; padding:8px; margin-top:4px; border-radius:6px; border:1px solid #ccc; }
-    .row { display:flex; gap:10px; }
-    .row > div { flex:1; }
-    button { padding:12px 20px; margin-top:15px; border:none; border-radius:8px; background:#13007d; color:white; font-weight:bold; cursor:pointer; }
-    .camera-container { margin-top:15px; text-align:center; }
-    #snapshot { display:none; }
-    .preview img { max-width:220px; border:3px solid #13007d; border-radius:8px; margin-top:10px; }
-    #summary { text-align:left; margin-top:20px; }
+    .grid-container { display:grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap:15px; margin-top:20px; }
+    .report-card { background:#f9f9f9; border:1px solid #ccc; border-radius:8px; padding:10px; cursor:pointer; transition:0.2s; }
+    .report-card:hover { box-shadow:0 0 10px rgba(0,0,0,0.2); }
+    .report-title { font-weight:bold; color:#13007d; }
+    .report-summary { margin-top:5px; font-size:14px; }
+    .modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); justify-content:center; align-items:center; }
+    .modal-content { background:white; padding:20px; border-radius:12px; max-width:600px; max-height:80%; overflow-y:auto; position:relative; }
+    .close-btn { position:absolute; top:10px; right:10px; padding:6px 12px; border:none; border-radius:6px; background:#13007d; color:white; cursor:pointer; }
+    .modal img { max-width:100%; margin-top:10px; border:2px solid #13007d; border-radius:8px; }
+    #submitAnother { margin-top:15px; padding:12px 20px; border:none; border-radius:8px; background:#13007d; color:white; font-weight:bold; cursor:pointer; }
   </style>
 </head>
 <body>
@@ -27,131 +29,92 @@
     <source src="video/FAITH.mp4" type="video/mp4">
   </video>
 </div>
+<div class="overlay"></div>
 
 <div class="card">
-  <button id="backBtn">&larr; Back</button>
-  <h2>Lost Item Report</h2>
-  <p class="note">Fill in the fields and take a picture of the item.</p>
+  <h2>All Submitted Lost Reports</h2>
+  <div id="summary" class="grid-container">Loading reports...</div>
+  <button id="submitAnother">Submit Another Report</button>
+</div>
 
-  <form id="lostForm">
-    <label for="email">First Asia Email</label>
-    <input id="email" name="email" type="email" placeholder="s20xxxxxxxx@firstasia.edu.ph" required />
-
-    <div class="row">
-      <div>
-        <label for="what">What (Anong nawala?)</label>
-        <input id="what" name="what" type="text" placeholder="Ex: wallet, phone" required />
-      </div>
-      <div>
-        <label for="when">When (Kailan nawala?)</label>
-        <input id="when" name="when" type="datetime-local" required />
-      </div>
-    </div>
-
-    <div class="row">
-      <div>
-        <label for="where">Where (Saan nawala?)</label>
-        <input id="where" name="where" type="text" placeholder="Ex: 3rd floor hallway" />
-      </div>
-      <div>
-        <label for="who">Who (Sino ang may-ari?)</label>
-        <input id="who" name="who" type="text" placeholder="Optional" />
-      </div>
-    </div>
-
-    <label for="otherw">More Info</label>
-    <input id="otherw" name="otherw" type="text" placeholder="Ex: Contains an ID card inside" />
-
-    <label for="description">Description (Detalye)</label>
-    <textarea id="description" name="description" rows="4" placeholder="Unique characteristics of the item (color, brand, damage, etc.)"></textarea>
-
-    <div class="camera-container">
-      <video id="camera" autoplay playsinline></video>
-    </div>
-    <button type="button" id="takePic">Take Picture</button>
-    <canvas id="snapshot"></canvas>
-    <input type="hidden" id="photo_base64" name="photo_base64">
-    <div class="preview" id="preview"></div>
-
-    <button type="submit">Send Report</button>
-  </form>
-
-  <div id="summary" style="display:none;"></div>
-
-  <div style="display:flex; justify-content:center; gap:15px; margin-top:10px;">
-    <button id="submitAgain" style="display:none;">Submit Another Report</button>
-    <button id="viewReports" style="display:none;">View All Reports</button>
+<div id="reportModal" class="modal">
+  <div class="modal-content">
+    <button class="close-btn" id="closeModal">Close</button>
+    <div id="modalDetails"></div>
   </div>
 </div>
 
 <script>
-const form = document.getElementById('lostForm');
-const camera = document.getElementById('camera');
-const takePic = document.getElementById('takePic');
-const snapshot = document.getElementById('snapshot');
-const preview = document.getElementById('preview');
-const photoBase64Input = document.getElementById('photo_base64');
-const summary = document.getElementById('summary');
-const submitAgain = document.getElementById('submitAgain');
-const viewReports = document.getElementById('viewReports');
-const backBtn = document.getElementById('backBtn');
+const summaryDiv = document.getElementById('summary');
+const modal = document.getElementById('reportModal');
+const modalDetails = document.getElementById('modalDetails');
+const closeModalBtn = document.getElementById('closeModal');
+const submitAnother = document.getElementById('submitAnother');
 
-// Back button
-backBtn.addEventListener('click', () => window.history.back());
+const JSON_URL = "YOUR_JSON_WEBAPP_URL"; // <-- ilagay dito Apps Script Web App URL
 
-// Open camera
-navigator.mediaDevices.getUserMedia({ video: true })
-  .then(stream => { camera.srcObject = stream; })
-  .catch(err => console.error('Camera error:', err));
+let reports = [];
 
-// Take picture
-takePic.addEventListener('click', () => {
-  const ctx = snapshot.getContext('2d');
-  snapshot.width = camera.videoWidth;
-  snapshot.height = camera.videoHeight;
-  ctx.drawImage(camera, 0, 0);
-  const dataUrl = snapshot.toDataURL('image/png');
-  photoBase64Input.value = dataUrl;
-  preview.innerHTML = `<img src="${dataUrl}" alt="Snapshot">`;
-});
+// Fetch reports from Google Sheets via Apps Script
+async function loadReports() {
+  try {
+    const res = await fetch(JSON_URL);
+    reports = await res.json();
 
-// Submit to Google Sheets
-form.addEventListener('submit', (e) => {
-  e.preventDefault();
-  const fd = new FormData(form);
-  const report = {};
-  ['email','what','when','where','who','otherw','description','photo_base64'].forEach(k => {
-    report[k] = fd.get(k) || '';
-  });
+    if(reports.length === 0){
+      summaryDiv.innerHTML = "<p>No reports submitted yet.</p>";
+      return;
+    }
 
-  fetch("https://script.google.com/macros/s/AKfycbwf_GytShdRRRo1SyXp-ve2cmvv2eoViM5zVpwnD2pRR5oR9xGKFYKlN-7KoqmmlI3v/exec", {
-    method: "POST",
-    body: new URLSearchParams(report)
-  })
-  .then(resp => resp.text())
-  .then(data => {
-    console.log(data);
-    form.style.display = 'none';
-    preview.innerHTML = '';
-    summary.style.display = 'block';
-    summary.innerHTML = "<h2>Report Summary</h2><ul>" +
-      Object.keys(report).map(k => {
-        if(k === 'photo_base64') return `<li><strong>Photo:</strong><br><img src="${report[k]}" style="max-width:300px;border:2px solid #13007d;border-radius:8px;"></li>`;
-        else return `<li><strong>${k}:</strong> ${report[k]}</li>`;
-      }).join('') +
-      "</ul><p style='color:green;font-weight:bold;'>Report sent. Thank you!</p>";
+    summaryDiv.innerHTML = "";
+    reports.forEach((data, idx) => {
+      const card = document.createElement('div');
+      card.className = 'report-card';
 
-    submitAgain.style.display = 'inline-block';
-    viewReports.style.display = 'inline-block';
-  })
-  .catch(err => alert("Error sending report: " + err));
-});
+      // Kunin ang image URL at gawing <img> tag
+      let imgHTML = '';
+      if(data["Photo URL"]){
+        imgHTML = `<img src="${data["Photo URL"]}" alt="Lost Item" style="max-width:100%; border:2px solid #13007d; border-radius:8px;">`;
+      }
 
-// Buttons behavior
-submitAgain.addEventListener('click', () => window.location.reload());
-viewReports.addEventListener('click', () => window.location.href = 'lostreport.html');
+      card.innerHTML = `<div class="report-title">Report #${idx+1}</div>
+                        <div class="report-summary">${data.What || 'No description'}</div>
+                        ${imgHTML}`;
+
+      card.addEventListener('click', () => {
+        // Modal details
+        let html = `<h3>Report #${idx+1}</h3><ul>`;
+        for(const key in data){
+          if(key === "Photo URL" && data[key]){
+            html += `<li><strong>Photo:</strong><br><img src="${data[key]}" style="max-width:100%;"></li>`;
+          } else {
+            html += `<li><strong>${key}:</strong> ${data[key]}</li>`;
+          }
+        }
+        html += "</ul>";
+        modalDetails.innerHTML = html;
+        modal.style.display = 'flex';
+      });
+
+      summaryDiv.appendChild(card);
+    });
+
+  } catch(err) {
+    console.error("Error loading reports:", err);
+    summaryDiv.innerHTML = "<p>Error loading reports. Try again later.</p>";
+  }
+}
+
+// Close modal
+closeModalBtn.addEventListener('click', () => modal.style.display = 'none');
+window.addEventListener('click', e => { if(e.target === modal) modal.style.display = 'none'; });
+
+// Submit another report
+submitAnother.addEventListener('click', () => window.location.href = 'index.html');
+
+// Load reports on page load
+loadReports();
 </script>
 
 </body>
 </html>
-
