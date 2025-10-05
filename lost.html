@@ -77,8 +77,10 @@
   </form>
 
   <div id="summary" style="display:none;"></div>
+
   <div style="display:flex; justify-content:center; gap:15px; margin-top:10px;">
     <button id="submitAgain" style="display:none;">Submit Another Report</button>
+    <button id="viewReports" style="display:none;">View All Reports</button>
   </div>
 </div>
 
@@ -91,6 +93,7 @@ const preview = document.getElementById('preview');
 const photoBase64Input = document.getElementById('photo_base64');
 const summary = document.getElementById('summary');
 const submitAgain = document.getElementById('submitAgain');
+const viewReports = document.getElementById('viewReports');
 const backBtn = document.getElementById('backBtn');
 
 // Back button
@@ -137,16 +140,17 @@ form.addEventListener('submit', (e) => {
         else return `<li><strong>${k}:</strong> ${report[k]}</li>`;
       }).join('') +
       "</ul><p style='color:green;font-weight:bold;'>Report sent. Thank you!</p>";
+
     submitAgain.style.display = 'inline-block';
+    viewReports.style.display = 'inline-block';
   })
   .catch(err => alert("Error sending report: " + err));
 });
 
+// Buttons behavior
 submitAgain.addEventListener('click', () => window.location.reload());
+viewReports.addEventListener('click', () => window.location.href = 'lostreport.html');
 </script>
 
 </body>
 </html>
-
-
-
