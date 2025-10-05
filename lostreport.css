@@ -22,7 +22,7 @@ body {
   object-fit:cover;
 }
 
-/* Overlay over video */
+/* Overlay (pointer-events:none para di ma-block click) */
 .overlay {
   position: fixed; 
   top:0; 
@@ -31,6 +31,7 @@ body {
   height:100%; 
   background: rgba(0,0,0,0.3);
   z-index:-1;
+  pointer-events: none; /* importante! */
 }
 
 /* Card container */
@@ -42,7 +43,7 @@ body {
   border-radius:12px;
   box-shadow:0 6px 16px rgba(0,0,0,0.3);
   position: relative;
-  z-index: 10; /* important for clickable buttons */
+  z-index: 10; /* mataas para above sa overlay at video */
   color:#13007d;
 }
 
@@ -52,6 +53,8 @@ body {
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap:16px;
   margin-top:20px;
+  position: relative;
+  z-index: 10;
 }
 
 /* Report card */
@@ -62,6 +65,7 @@ body {
   background: rgba(255,255,255,0.6);
   box-shadow:0 4px 8px rgba(0,0,0,0.15);
   transition:0.3s;
+  cursor: pointer;
 }
 .report-card:hover {
   transform: translateY(-2px);
