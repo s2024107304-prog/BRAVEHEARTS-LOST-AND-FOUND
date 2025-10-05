@@ -5,9 +5,6 @@
   <link rel="stylesheet" href="lostreport.css">
   <style>
     body { font-family: Arial, sans-serif; background:#f2f2f2; margin:0; padding:0;}
-    .video-background { position:fixed; top:0; left:0; width:100%; height:100%; z-index:-1; overflow:hidden; }
-    .video-background video { width:100%; height:100%; object-fit:cover; }
-    .overlay { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.3); z-index:-1; }
     .card { background:white; max-width:900px; margin:50px auto; padding:20px; border-radius:12px; box-shadow:0 4px 15px rgba(0,0,0,0.2);}
     h2 { text-align:center; color:#13007d; }
     .grid-container { display:grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap:15px; margin-top:20px; }
@@ -15,21 +12,11 @@
     .report-card:hover { box-shadow:0 0 10px rgba(0,0,0,0.2); }
     .report-title { font-weight:bold; color:#13007d; }
     .report-summary { margin-top:5px; font-size:14px; }
-    .modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); justify-content:center; align-items:center; }
-    .modal-content { background:white; padding:20px; border-radius:12px; max-width:600px; max-height:80%; overflow-y:auto; position:relative; }
-    .close-btn { position:absolute; top:10px; right:10px; padding:6px 12px; border:none; border-radius:6px; background:#13007d; color:white; cursor:pointer; }
-    #submitAnother { margin-top:15px; padding:12px 20px; border:none; border-radius:8px; background:#13007d; color:white; font-weight:bold; cursor:pointer; }
     .view-btn { margin-top:10px; padding:6px 12px; border:none; border-radius:6px; background:#13007d; color:white; cursor:pointer; }
+    #submitAnother { margin-top:15px; padding:12px 20px; border:none; border-radius:8px; background:#13007d; color:white; font-weight:bold; cursor:pointer; }
   </style>
 </head>
 <body>
-
-<div class="video-background">
-  <video autoplay muted loop playsinline>
-    <source src="video/FAITH.mp4" type="video/mp4">
-  </video>
-</div>
-<div class="overlay"></div>
 
 <div class="card">
   <h2>All Submitted Lost Reports</h2>
@@ -41,7 +28,7 @@
 const summaryDiv = document.getElementById('summary');
 const submitAnother = document.getElementById('submitAnother');
 
-const JSON_URL = "https://script.google.com/macros/s/AKfycbzL-RmRF9eo66tZNb1gf0N2oCDUrg6autPT8wW7w76CeDbGhrKyruq_EutSd4JMoLY_/exec"; // Palitan ng actual Web App URL
+const JSON_URL = "YOUR_APPS_SCRIPT_WEB_APP_URL_HERE"; // palitan ng Web App URL
 
 async function loadReports() {
   try {
@@ -54,13 +41,15 @@ async function loadReports() {
     }
 
     summaryDiv.innerHTML = "";
-    reports.forEach((data, idx)=>{
+    reports.forEach((data, idx) => {
       const card = document.createElement('div');
       card.className = 'report-card';
 
       let viewButton = '';
-      if(data["Photo URL"]){
-        viewButton = `<a href="${data["Photo URL"]}" target="_blank">
+      if(data["Photo"]){
+        // Kung puro ID lang ang nakalagay, i-convert sa drive link
+        const driveLink = data["Photo"].includes("http") ? data["Photo"] : "https://drive.google.com/file/d/" + data["Photo"] + "/view?usp=sharing";
+        viewButton = `<a href="${driveLink}" target="_blank">
                         <button class="view-btn">View Image</button>
                       </a>`;
       }
@@ -81,10 +70,8 @@ async function loadReports() {
 // Submit another report
 submitAnother.addEventListener('click', () => window.location.href = 'index.html');
 
-// Load reports on page load
 loadReports();
 </script>
 
 </body>
 </html>
-
