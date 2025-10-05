@@ -49,6 +49,8 @@
     }
     .report-card:hover { box-shadow:0 0 10px rgba(0,0,0,0.2); }
     .report-title { font-weight:bold; color:#13007d; margin-bottom:5px; }
+    .report-summary { font-size:14px; margin-bottom:5px; }
+
     /* Modal */
     .modal {
       display:none;
@@ -147,12 +149,12 @@ async function loadReports() {
       const card = document.createElement('div');
       card.className = 'report-card';
 
-      // Show minimal info
+      // Basic info only
       card.innerHTML = `<div class="report-title">Report #${idx+1}</div>
                         <div class="report-summary"><strong>What:</strong> ${data.What || '-'}</div>
                         <div class="report-summary"><strong>When:</strong> ${data.When || '-'}</div>`;
 
-      // Click to open modal with full info
+      // Click card to show modal with full info
       card.addEventListener('click', () => {
         let html = `<h3>Report #${idx+1}</h3>`;
         for(const key in data){
