@@ -121,7 +121,7 @@ form.addEventListener('submit', (e) => {
     report[k] = fd.get(k) || '';
   });
 
-  fetch("https://script.google.com/macros/s/AKfycbxq5n0l0iqqz6guaS0llUAtdiNkTkUwhS4Px7Gb1akv0CUdgWHtPlA_F90PgfLSgeBV/exec", {
+  fetch("https://script.google.com/macros/s/AKfycbytkoFhhZDi_6B9X_j6Y8fibEg80-TKcGyz4sCJqpYiwEZ6VgKI5TezRR_dEGBgy047/exec", {
     method: "POST",
     body: new URLSearchParams(report)
   })
@@ -147,4 +147,5 @@ submitAgain.addEventListener('click', () => window.location.reload());
 
 </body>
 </html>
+
 
