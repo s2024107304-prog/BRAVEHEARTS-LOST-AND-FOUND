@@ -3,24 +3,10 @@
 <head>
   <title>Lost Reports - Bravehearts Lost & Found</title>
   <link rel="stylesheet" href="lostreport.css">
-  <style>
-    body { font-family: Arial, sans-serif; background:#f2f2f2; margin:0; padding:0; }
-    .video-background { position:fixed; top:0; left:0; width:100%; height:100%; z-index:-2; overflow:hidden; }
-    .video-background video { width:100%; height:100%; object-fit:cover; }
-    .overlay { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.3); z-index:-1; }
-    .card { background:white; max-width:900px; margin:50px auto; padding:20px; border-radius:12px; box-shadow:0 4px 15px rgba(0,0,0,0.2); position:relative; z-index:1; }
-    h2 { text-align:center; color:#13007d; }
-    .grid-container { display:grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap:15px; margin-top:20px; }
-    .report-card { background:#f9f9f9; border:1px solid #ccc; border-radius:8px; padding:10px; cursor:pointer; transition:0.2s; }
-    .report-card:hover { box-shadow:0 0 10px rgba(0,0,0,0.2); }
-    .report-title { font-weight:bold; color:#13007d; }
-    .report-summary { margin-top:5px; font-size:14px; }
-    .view-btn { margin-top:10px; padding:6px 12px; border:none; border-radius:6px; background:#13007d; color:white; cursor:pointer; }
-    #submitAnother { margin-top:15px; padding:12px 20px; border:none; border-radius:8px; background:#13007d; color:white; font-weight:bold; cursor:pointer; }
-  </style>
 </head>
 <body>
 
+<!-- Video background -->
 <div class="video-background">
   <video autoplay muted loop playsinline>
     <source src="video/FAITH.mp4" type="video/mp4">
@@ -28,6 +14,7 @@
 </div>
 <div class="overlay"></div>
 
+<!-- Main Card -->
 <div class="card">
   <h2>All Submitted Lost Reports</h2>
   <div id="summary" class="grid-container">Loading reports...</div>
@@ -55,9 +42,9 @@ async function loadReports() {
       const card = document.createElement('div');
       card.className = 'report-card';
 
+      // Create Drive link button
       let viewButton = '';
       if(data.Photo){
-        // Gawin full Drive link kung puro ID lang
         let driveLink = data.Photo;
         if(!driveLink.includes("http")){
           driveLink = "https://drive.google.com/file/d/" + data.Photo + "/view?usp=sharing";
@@ -67,9 +54,12 @@ async function loadReports() {
                       </a>`;
       }
 
-      card.innerHTML = `<div class="report-title">Report #${idx+1}</div>
-                        <div class="report-summary">${data.What || 'No description'}</div>
-                        ${viewButton}`;
+      // Fill card content
+      card.innerHTML = `
+        <div class="report-title">Report #${idx+1}</div>
+        <div class="report-summary">${data.What || 'No description'}</div>
+        ${viewButton}
+      `;
 
       summaryDiv.appendChild(card);
     });
@@ -80,6 +70,7 @@ async function loadReports() {
   }
 }
 
+// Redirect to submission page
 submitAnother.addEventListener('click', () => window.location.href = 'index.html');
 
 loadReports();
