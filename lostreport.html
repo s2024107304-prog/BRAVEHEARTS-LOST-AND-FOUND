@@ -51,7 +51,7 @@ const modalDetails = document.getElementById('modalDetails');
 const closeModalBtn = document.getElementById('closeModal');
 const submitAnother = document.getElementById('submitAnother');
 
-const JSON_URL = "https://script.google.com/macros/s/AKfycby_pIT46xfDKt9P7jDTsJ74-K3gaWNIdgBAM29m7D9yQQO_m5NQMEB8e1PEdTqnt5LI/exec"; // <-- ilagay dito Apps Script Web App URL
+const JSON_URL = "https://script.google.com/macros/s/AKfycby_pIT46xfDKt9P7jDTsJ74-K3gaWNIdgBAM29m7D9yQQO_m5NQMEB8e1PEdTqnt5LI/exec"; // <-- Apps Script Web App URL
 
 let reports = [];
 
@@ -71,10 +71,10 @@ async function loadReports() {
       const card = document.createElement('div');
       card.className = 'report-card';
 
-      // Kunin ang image URL at gawing <img> tag
+      // ✅ Kunin ang image URL at gawing <img> tag
       let imgHTML = '';
-      if(data["Photo URL"]){
-        imgHTML = `<img src="${data["Photo URL"]}" alt="Lost Item" style="max-width:100%; border:2px solid #13007d; border-radius:8px;">`;
+      if(data["Photo Url"]){
+        imgHTML = `<img src="${data["Photo Url"]}" alt="Lost Item" style="max-width:100%; border:2px solid #13007d; border-radius:8px;">`;
       }
 
       card.innerHTML = `<div class="report-title">Report #${idx+1}</div>
@@ -85,7 +85,7 @@ async function loadReports() {
         // Modal details
         let html = `<h3>Report #${idx+1}</h3><ul>`;
         for(const key in data){
-          if(key === "Photo URL" && data[key]){
+          if(key === "Photo Url" && data[key]){
             html += `<li><strong>Photo:</strong><br><img src="${data[key]}" style="max-width:100%;"></li>`;
           } else {
             html += `<li><strong>${key}:</strong> ${data[key]}</li>`;
@@ -118,5 +118,3 @@ loadReports();
 
 </body>
 </html>
-
-
