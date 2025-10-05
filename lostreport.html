@@ -29,6 +29,8 @@
       border-radius:12px;
       box-shadow:0 4px 15px rgba(0,0,0,0.2);
       background:white;
+      position: relative;
+      z-index:1;
     }
     h2 { text-align:center; color:#13007d; }
     .grid-container {
@@ -42,22 +44,47 @@
       border:1px solid #ccc;
       border-radius:8px;
       padding:10px;
+      cursor:pointer;
       transition:0.2s;
     }
     .report-card:hover { box-shadow:0 0 10px rgba(0,0,0,0.2); }
     .report-title { font-weight:bold; color:#13007d; margin-bottom:5px; }
-    .report-summary { font-size:14px; margin-bottom:5px; }
-    .view-btn {
-      margin-top:5px;
+    /* Modal */
+    .modal {
+      display:none;
+      position:fixed;
+      top:0; left:0;
+      width:100%; height:100%;
+      background: rgba(0,0,0,0.6);
+      justify-content:center;
+      align-items:center;
+      z-index:10;
+    }
+    .modal-content {
+      background:white;
+      padding:20px;
+      border-radius:12px;
+      max-width:600px;
+      max-height:80%;
+      overflow-y:auto;
+      position:relative;
+    }
+    .close-btn {
+      position:absolute;
+      top:10px; right:10px;
       padding:6px 12px;
       border:none;
       border-radius:6px;
       background:#13007d;
       color:white;
-      text-decoration:none;
-      display:inline-block;
+      cursor:pointer;
     }
-    .view-btn:hover { background:#0d0060; }
+    .modal img {
+      max-width:100%;
+      margin-top:10px;
+      border:2px solid #13007d;
+      border-radius:8px;
+    }
     #submitAnother {
       margin-top:20px;
       padding:12px 20px;
@@ -67,7 +94,10 @@
       color:white;
       font-weight:bold;
       cursor:pointer;
-  
+      position: relative;
+      z-index:2;
+    }
+    #submitAnother:hover { background:#0d0060; }
   </style>
 </head>
 <body>
@@ -85,12 +115,22 @@
   <button id="submitAnother">Submit Another Report</button>
 </div>
 
+<!-- Modal -->
+<div id="reportModal" class="modal">
+  <div class="modal-content">
+    <button class="close-btn" id="closeModal">Close</button>
+    <div id="modalDetails"></div>
+  </div>
+</div>
+
 <script>
 const summaryDiv = document.getElementById('summary');
+const modal = document.getElementById('reportModal');
+const modalDetails = document.getElementById('modalDetails');
+const closeModalBtn = document.getElementById('closeModal');
 const submitAnother = document.getElementById('submitAnother');
 
-// Google Apps Script Web App URL
-const JSON_URL = "https://script.google.com/macros/s/AKfycbzcaarGQM3riZ5RVnsVBhzHytK9PSCaJwUe2C0YnThymvw_9SJcFNI7HN2k7yLIi9fJ/exec"; // <-- palitan ng URL mo
+const JSON_URL = "https://script.google.com/macros/s/AKfycbzcaarGQM3riZ5RVnsVBhzHytK9PSCaJwUe2C0YnThymvw_9SJcFNI7HN2k7yLIi9fJ/exec"; // Apps Script URL
 
 async function loadReports() {
   try {
@@ -107,24 +147,26 @@ async function loadReports() {
       const card = document.createElement('div');
       card.className = 'report-card';
 
-      // Kunin ang image kung meron
-      let photoHTML = '';
-      if(data["Photo URL"]){
-        photoHTML = `<img src="${data["Photo URL"]}" alt="Lost Item" style="max-width:100%; border:2px solid #13007d; border-radius:8px; margin-top:5px;">
-                     <br><a href="${data["Photo URL"]}" target="_blank" class="view-btn">View Full Image</a>`;
-      }
-
-      // Ipakita lahat ng info mula sa Sheet
-      let infoHTML = '';
-      for(const key in data){
-        if(key !== "Photo URL"){
-          infoHTML += `<div class="report-summary"><strong>${key}:</strong> ${data[key]}</div>`;
-        }
-      }
-
+      // Show minimal info
       card.innerHTML = `<div class="report-title">Report #${idx+1}</div>
-                        ${infoHTML}
-                        ${photoHTML}`;
+                        <div class="report-summary"><strong>What:</strong> ${data.What || '-'}</div>
+                        <div class="report-summary"><strong>When:</strong> ${data.When || '-'}</div>`;
+
+      // Click to open modal with full info
+      card.addEventListener('click', () => {
+        let html = `<h3>Report #${idx+1}</h3>`;
+        for(const key in data){
+          if(data[key]){
+            if(key === "Photo URL"){
+              html += `<div><strong>${key}:</strong><br><img src="${data[key]}" alt="Lost Item"></div>`;
+            } else {
+              html += `<div><strong>${key}:</strong> ${data[key]}</div>`;
+            }
+          }
+        }
+        modalDetails.innerHTML = html;
+        modal.style.display = 'flex';
+      });
 
       summaryDiv.appendChild(card);
     });
@@ -135,7 +177,11 @@ async function loadReports() {
   }
 }
 
-// Button to submit another report
+// Close modal
+closeModalBtn.addEventListener('click', () => modal.style.display = 'none');
+window.addEventListener('click', e => { if(e.target === modal) modal.style.display = 'none'; });
+
+// Submit another report
 submitAnother.addEventListener('click', () => window.location.href = 'index.html');
 
 loadReports();
@@ -143,6 +189,3 @@ loadReports();
 
 </body>
 </html>
-
-
-
