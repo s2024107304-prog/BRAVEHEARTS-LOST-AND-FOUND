@@ -1,32 +1,48 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Lost Reports</title>
+  <title>Lost Reports - Bravehearts Lost & Found</title>
   <link rel="stylesheet" href="lostreport.css">
+  <style>
+    body { font-family: Arial, sans-serif; background:#f2f2f2; margin:0; padding:0;}
+    .video-background { position:fixed; top:0; left:0; width:100%; height:100%; z-index:-1; overflow:hidden; }
+    .video-background video { width:100%; height:100%; object-fit:cover; }
+    .overlay { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.3); z-index:-1; }
+    .card { background:white; max-width:900px; margin:50px auto; padding:20px; border-radius:12px; box-shadow:0 4px 15px rgba(0,0,0,0.2);}
+    h2 { text-align:center; color:#13007d; }
+    .grid-container { display:grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap:15px; margin-top:20px; }
+    .report-card { background:#f9f9f9; border:1px solid #ccc; border-radius:8px; padding:10px; cursor:pointer; transition:0.2s; }
+    .report-card:hover { box-shadow:0 0 10px rgba(0,0,0,0.2); }
+    .report-title { font-weight:bold; color:#13007d; }
+    .report-summary { margin-top:5px; font-size:14px; }
+    .modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); justify-content:center; align-items:center; }
+    .modal-content { background:white; padding:20px; border-radius:12px; max-width:600px; max-height:80%; overflow-y:auto; position:relative; }
+    .close-btn { position:absolute; top:10px; right:10px; padding:6px 12px; border:none; border-radius:6px; background:#13007d; color:white; cursor:pointer; }
+    .modal img { max-width:100%; margin-top:10px; border:2px solid #13007d; border-radius:8px; }
+    #submitAnother { margin-top:15px; padding:12px 20px; border:none; border-radius:8px; background:#13007d; color:white; font-weight:bold; cursor:pointer; }
+  </style>
 </head>
 <body>
 
-  <!-- Video background -->
-  <div class="video-background">
-    <video autoplay muted loop playsinline>
-      <source src="video/FAITH.mp4" type="video/mp4">
-    </video>
-  </div>
-  <div class="overlay"></div>
+<div class="video-background">
+  <video autoplay muted loop playsinline>
+    <source src="video/FAITH.mp4" type="video/mp4">
+  </video>
+</div>
+<div class="overlay"></div>
 
-  <div class="card">
-    <h2>All Submitted Lost Reports</h2>
-    <div id="summary" class="grid-container">Loading reports...</div>
-    <button id="submitAnother">Submit Another Report</button>
-  </div>
+<div class="card">
+  <h2>All Submitted Lost Reports</h2>
+  <div id="summary" class="grid-container">Loading reports...</div>
+  <button id="submitAnother">Submit Another Report</button>
+</div>
 
-  <!-- Modal for full report details -->
-  <div id="reportModal" class="modal">
-    <div class="modal-content">
-      <button class="close-btn" id="closeModal">Close</button>
-      <div id="modalDetails"></div>
-    </div>
+<div id="reportModal" class="modal">
+  <div class="modal-content">
+    <button class="close-btn" id="closeModal">Close</button>
+    <div id="modalDetails"></div>
   </div>
+</div>
 
 <script>
 const summaryDiv = document.getElementById('summary');
@@ -35,12 +51,11 @@ const modalDetails = document.getElementById('modalDetails');
 const closeModalBtn = document.getElementById('closeModal');
 const submitAnother = document.getElementById('submitAnother');
 
-const JSON_URL = "https://script.google.com/macros/s/AKfycbzjI3Vjm-4o8nepc_9OEL4juGtggIH8qzVstIgLY1zS2whH1QyodQdpMQVw0HZbO2pn/exec"; // <-- ilagay dito ang Apps Script Web App URL na may doGet()
+const JSON_URL = "YOUR_JSON_WEBAPP_URL"; // <-- ilagay dito Apps Script Web App URL
 
 let reports = [];
-let activeReportIndex = null;
 
-// Fetch reports from Apps Script Web App
+// Fetch reports from Google Sheets via Apps Script
 async function loadReports() {
   try {
     const res = await fetch(JSON_URL);
@@ -55,17 +70,23 @@ async function loadReports() {
     reports.forEach((data, idx) => {
       const card = document.createElement('div');
       card.className = 'report-card';
-      card.innerHTML = `<div class="report-title">Report #${idx+1}</div>
-                        <div class="report-summary">${data.What || 'No description'}</div>`;
-      
-      card.addEventListener('click', () => {
-        activeReportIndex = idx;
 
-        // Show modal with full details
+      // Kunin ang image URL at gawing <img> tag
+      let imgHTML = '';
+      if(data["Photo URL"]){
+        imgHTML = `<img src="${data["Photo URL"]}" alt="Lost Item" style="max-width:100%; border:2px solid #13007d; border-radius:8px;">`;
+      }
+
+      card.innerHTML = `<div class="report-title">Report #${idx+1}</div>
+                        <div class="report-summary">${data.What || 'No description'}</div>
+                        ${imgHTML}`;
+
+      card.addEventListener('click', () => {
+        // Modal details
         let html = `<h3>Report #${idx+1}</h3><ul>`;
         for(const key in data){
-          if(key === 'Photo URL' && data[key]){
-            html += `<li><strong>Photo:</strong><br><img src="${data[key]}" style="max-width:300px;border:2px solid #13007d;border-radius:8px;"></li>`;
+          if(key === "Photo URL" && data[key]){
+            html += `<li><strong>Photo:</strong><br><img src="${data[key]}" style="max-width:100%;"></li>`;
           } else {
             html += `<li><strong>${key}:</strong> ${data[key]}</li>`;
           }
@@ -94,6 +115,6 @@ submitAnother.addEventListener('click', () => window.location.href = 'index.html
 // Load reports on page load
 loadReports();
 </script>
+
 </body>
 </html>
-
