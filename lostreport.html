@@ -28,7 +28,7 @@
 const summaryDiv = document.getElementById('summary');
 const submitAnother = document.getElementById('submitAnother');
 
-const JSON_URL = "https://script.google.com/macros/s/AKfycbzL-RmRF9eo66tZNb1gf0N2oCDUrg6autPT8wW7w76CeDbGhrKyruq_EutSd4JMoLY_/exec"; // palitan ng Web App URL
+const JSON_URL = "YOUR_APPS_SCRIPT_WEB_APP_URL_HERE"; // Palitan ng Web App URL
 
 async function loadReports() {
   try {
@@ -46,9 +46,13 @@ async function loadReports() {
       card.className = 'report-card';
 
       let viewButton = '';
-      if(data["Photo"]){
-        // Kung puro ID lang ang nakalagay, i-convert sa drive link
-        const driveLink = data["Photo"].includes("http") ? data["Photo"] : "https://drive.google.com/file/d/" + data["Photo"] + "/view?usp=sharing";
+      if(data.Photo){
+        // Kung nakalagay na full URL (https://drive.google.com/...), gamitin ito
+        let driveLink = data.Photo;
+        // Kung puro file ID lang, gawin full Drive link
+        if(!driveLink.includes("http")){
+          driveLink = "https://drive.google.com/file/d/" + data.Photo + "/view?usp=sharing";
+        }
         viewButton = `<a href="${driveLink}" target="_blank">
                         <button class="view-btn">View Image</button>
                       </a>`;
@@ -75,4 +79,3 @@ loadReports();
 
 </body>
 </html>
-
