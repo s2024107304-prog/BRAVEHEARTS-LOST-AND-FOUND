@@ -3,24 +3,6 @@
 <head>
   <title>Lost Reports - Bravehearts Lost & Found</title>
   <link rel="stylesheet" href="lostreport.css">
-  <style>
-    body { font-family: Arial, sans-serif; background:#f2f2f2; margin:0; padding:0;}
-    .video-background { position:fixed; top:0; left:0; width:100%; height:100%; z-index:-1; overflow:hidden; }
-    .video-background video { width:100%; height:100%; object-fit:cover; }
-    .overlay { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.3); z-index:-1; }
-    .card { background:white; max-width:900px; margin:50px auto; padding:20px; border-radius:12px; box-shadow:0 4px 15px rgba(0,0,0,0.2);}
-    h2 { text-align:center; color:#13007d; }
-    .grid-container { display:grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap:15px; margin-top:20px; }
-    .report-card { background:#f9f9f9; border:1px solid #ccc; border-radius:8px; padding:10px; cursor:pointer; transition:0.2s; }
-    .report-card:hover { box-shadow:0 0 10px rgba(0,0,0,0.2); }
-    .report-title { font-weight:bold; color:#13007d; }
-    .report-summary { margin-top:5px; font-size:14px; }
-    .modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); justify-content:center; align-items:center; }
-    .modal-content { background:white; padding:20px; border-radius:12px; max-width:600px; max-height:80%; overflow-y:auto; position:relative; }
-    .close-btn { position:absolute; top:10px; right:10px; padding:6px 12px; border:none; border-radius:6px; background:#13007d; color:white; cursor:pointer; }
-    #submitAnother { margin-top:15px; padding:12px 20px; border:none; border-radius:8px; background:#13007d; color:white; font-weight:bold; cursor:pointer; }
-    .view-btn { margin-top:10px; padding:6px 12px; border:none; border-radius:6px; background:#13007d; color:white; cursor:pointer; }
-  </style>
 </head>
 <body>
 
@@ -37,11 +19,22 @@
   <button id="submitAnother">Submit Another Report</button>
 </div>
 
+<!-- Modal -->
+<div id="reportModal" class="modal">
+  <div class="modal-content">
+    <button class="close-btn" id="closeModal">Close</button>
+    <div id="modalDetails"></div>
+  </div>
+</div>
+
 <script>
 const summaryDiv = document.getElementById('summary');
 const submitAnother = document.getElementById('submitAnother');
+const modal = document.getElementById('reportModal');
+const modalDetails = document.getElementById('modalDetails');
+const closeModalBtn = document.getElementById('closeModal');
 
-const JSON_URL = "YOUR_APPS_SCRIPT_WEB_APP_URL_HERE"; // Palitan ng actual Web App URL
+const JSON_URL = "https://script.google.com/macros/s/AKfycbzL-RmRF9eo66tZNb1gf0N2oCDUrg6autPT8wW7w76CeDbGhrKyruq_EutSd4JMoLY_/exec";
 
 async function loadReports() {
   try {
@@ -54,20 +47,31 @@ async function loadReports() {
     }
 
     summaryDiv.innerHTML = "";
-    reports.forEach((data, idx)=>{
+    reports.forEach((data, idx) => {
       const card = document.createElement('div');
       card.className = 'report-card';
 
-      let viewButton = '';
-      if(data["Photo URL"]){
-        viewButton = `<a href="${data["Photo URL"]}" target="_blank">
-                        <button class="view-btn">View Image</button>
-                      </a>`;
-      }
-
       card.innerHTML = `<div class="report-title">Report #${idx+1}</div>
                         <div class="report-summary">${data.What || 'No description'}</div>
-                        ${viewButton}`;
+                        <a href="${data.Photo ? (data.Photo.includes('http') ? data.Photo : 'https://drive.google.com/file/d/' + data.Photo + '/view?usp=sharing') : '#'}" target="_blank">
+                          <button class="view-btn">View Image</button>
+                        </a>`;
+
+      // Click event to open modal with all info
+      card.addEventListener('click', () => {
+        let html = `<h3>Report #${idx+1}</h3><ul>`;
+        for(const key in data){
+          if(key === 'Photo' && data[key]){
+            let link = data[key].includes('http') ? data[key] : 'https://drive.google.com/file/d/' + data[key] + '/view?usp=sharing';
+            html += `<li><strong>${key}:</strong> <a href="${link}" target="_blank">View Image</a></li>`;
+          } else {
+            html += `<li><strong>${key}:</strong> ${data[key]}</li>`;
+          }
+        }
+        html += `</ul>`;
+        modalDetails.innerHTML = html;
+        modal.style.display = 'flex';
+      });
 
       summaryDiv.appendChild(card);
     });
@@ -78,10 +82,9 @@ async function loadReports() {
   }
 }
 
-// Submit another report
 submitAnother.addEventListener('click', () => window.location.href = 'index.html');
+closeModalBtn.addEventListener('click', () => modal.style.display = 'none');
 
-// Load reports on page load
 loadReports();
 </script>
 
