@@ -64,10 +64,12 @@
 
   <div id="summary" style="display:none;"></div>
 
-  <div style="display:flex; justify-content:center; gap:15px; margin-top:10px;">
-    <button id="submitAgain" style="display:none;">Submit Another Report</button>
-    <button id="viewReports" style="display:none;">View All Reports</button>
-  </div>
+   <!-- Summary + action buttons -->
+    <div id="summary" style="display:none; margin-top:20px; text-align:left;"></div>
+    <div style="display:flex; justify-content:center; gap:15px; margin-top:10px;">
+      <button id="submitAgain" style="display:none; padding:12px 20px; border-radius:8px; border:none; background:#13007d; color:#fff; font-weight:bold; cursor:pointer;">Submit Another Report</button>
+      <button id="goToLostReport" style="display:none; padding:12px 20px; border-radius:8px; border:none; background:#13007d; color:#fff; font-weight:bold; cursor:pointer;">View All Reports</button>
+    </div>
 </div>
 
 <script>
@@ -140,6 +142,7 @@ viewReports.addEventListener('click', () => window.location.href = 'lostreport.h
 
 </body>
 </html>
+
 
 
 
