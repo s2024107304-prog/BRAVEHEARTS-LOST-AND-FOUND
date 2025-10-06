@@ -100,7 +100,7 @@ button:nth-child(3) {
 
 /* Small "View All Reports" buttons */
 .small-btn {
-  padding: 15px 21px;       /* compact padding */
+  padding: 18px 21px;       /* compact padding */
   font-size: 13px;         /* smaller text than big buttons */
   border: none;
   border-radius: 5px;
