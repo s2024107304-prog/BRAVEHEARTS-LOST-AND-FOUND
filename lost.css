@@ -1,187 +1,248 @@
-
-
 /* Video background */
-.video-background {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -2;
-  overflow: hidden;
-}
+    .video-background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -2;
+      overflow: hidden;
+    }
 
-.video-background video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
+    .video-background video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
 
-/* Overlay for darker effect */
-.overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(135deg,  rgba(0, 0, 0, 0,));
-  z-index: -1;
-}
-/* Body */
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  color: #222;
-}
+    /* Overlay for darker effect */
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(0,0,0,0));
+      z-index: -1;
+    }
 
-/* Card layout */
-.card {
-  max-width: 750px;
-  margin: 50px auto;
-  background: rgba(255, 255, 255, 0.364);
-  padding: 35px 40px;
-  border-radius: 12px;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.3);
-  position: relative;
-  z-index: 1;
-  color: #13007d;
-  font-size: 1.15rem;
-}
+    /* Body */
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      color: #222;
+    }
 
-h2 {
-  color: #13007d;
-  font-size: 2.3rem;
-  margin-bottom: 20px;
-  text-align: center;
-}
+    /* Card layout */
+    .card {
+      max-width: 750px;
+      margin: 50px auto;
+      background: rgba(255, 255, 255, 0.364);
+      padding: 35px 40px;
+      border-radius: 12px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.3);
+      position: relative;
+      z-index: 1;
+      color: #13007d;
+      font-size: 1.15rem;
+    }
 
-.note {
-  font-size: 1.1rem;
-  margin-bottom: 25px;
-  color: #13007d;
-  text-align: center;
-}
+    h2 {
+      color: #13007d;
+      font-size: 2.3rem;
+      margin-bottom: 20px;
+      text-align: center;
+    }
 
-label {
-  font-weight: bold;
-  font-size: 1.15rem;
-  display: block;
-  margin-top: 14px;
-  margin-bottom: 6px;
-  color: #13007d;
-}
+    .note {
+      font-size: 1.1rem;
+      margin-bottom: 25px;
+      color: #13007d;
+      text-align: center;
+    }
 
-input, textarea {
-  width: 100%;
-  padding: 14px;
-  font-size: 1.15rem;
-  border-radius: 8px;
-  border: 1px solid #13007d;
-  margin-bottom: 22px;
-  box-sizing: border-box;
-  color: #13007d;
-  background: #fff;
-}
+    label {
+      font-weight: bold;
+      font-size: 1.15rem;
+      display: block;
+      margin-top: 14px;
+      margin-bottom: 6px;
+      color: #13007d;
+    }
 
-input::placeholder,
-textarea::placeholder {
-  color: #13007d;
-  opacity: 0.7;
-}
+    input, textarea {
+      width: 100%;
+      padding: 14px;
+      font-size: 1.15rem;
+      border-radius: 8px;
+      border: 1px solid #13007d;
+      margin-bottom: 22px;
+      box-sizing: border-box;
+      color: #13007d;
+      background: #fff;
+    }
 
-input:focus, textarea:focus {
-  border-color: #13007d;
-  outline: none;
-  box-shadow: 0 0 6px #13007d;
-}
+    input::placeholder,
+    textarea::placeholder {
+      color: #13007d;
+      opacity: 0.7;
+    }
 
-/* Send Report button */
-button[type="submit"] {
-  width: 100%;
-  padding: 18px;
-  font-size: 1.25rem;
-  border-radius: 8px;
-  border: none;
-  background: #13007d;
-  color: #fff;
-  font-weight: bold;
-  cursor: pointer;
-  transition: 0.3s;
-  margin-top: 18px;
-}
-button[type="submit"]:hover {
-  background: #0d0060;
-}
+    input:focus, textarea:focus {
+      border-color: #13007d;
+      outline: none;
+      box-shadow: 0 0 6px #13007d;
+    }
 
-/* Take Picture button */
-#takePic {
-  width: 180px;
-  padding: 12px;
-  border: 2px solid #13007d;
-  border-radius: 8px;
-  background: #fff;
-  color: #13007d;
-  font-weight: bold;
-  font-size: 1.1rem;
-  cursor: pointer;
-  display: block;
-  margin: 15px auto;
-  transition: 0.3s;
-}
-#takePic:hover {
-  background: #13007d;
-  color: #fff;
-}
+    /* Send Report button */
+    button[type="submit"] {
+      width: 100%;
+      padding: 18px;
+      font-size: 1.25rem;
+      border-radius: 8px;
+      border: none;
+      background: #13007d;
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+      margin-top: 18px;
+    }
+    button[type="submit"]:hover {
+      background: #0d0060;
+    }
 
-/* Submit Another Report button */
-#newReport {
-  width: 50%;                /* mas maliit kaysa Send Report */
-  padding: 14px;
-  font-size: 1.15rem;
-  border-radius: 8px;
-  border: 2px solid #13007d;
-  background: #fff;
-  color: #13007d;
-  font-weight: bold;
-  cursor: pointer;
-  display: block;
-  margin: 20px auto 0 auto;  /* centered */
-  transition: all 0.3s ease;
-}
-#newReport:hover {
-  background: #13007d;
-  color: #fff;
-  border-color: #0d0060;
-}
+    /* Take Picture button */
+    #takePic {
+      width: 180px;
+      padding: 12px;
+      border: 2px solid #13007d;
+      border-radius: 8px;
+      background: #fff;
+      color: #13007d;
+      font-weight: bold;
+      font-size: 1.1rem;
+      cursor: pointer;
+      display: block;
+      margin: 15px auto;
+      transition: 0.3s;
+    }
+    #takePic:hover {
+      background: #13007d;
+      color: #fff;
+    }
 
-/* Row inputs */
-.row {
-  display: flex;
-  gap: 20px;
-  margin-bottom: 20px;
-}
-.row div {
-  flex: 1;
-}
+    /* Back button */
+    #backBtn {
+      padding: 12px 20px;
+      font-size: 1.1rem;
+      border-radius: 8px;
+      border: 2px solid #13007d;
+      background: #fff;
+      color: #13007d;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-bottom: 20px;
+    }
 
-/* Camera */
-.camera-container {
-  display: flex;
-  justify-content: center;
-  margin: 20px 0;
-}
+    #backBtn:hover {
+      background: #13007d;
+      color: #fff;
+      border-color: #0d0060;
+    }
 
-#camera {
-  width: 100%;
-  max-width: 400px;
-  border-radius: 8px;
-  border: 2px solid #13007d;
-}
+    /* Row inputs */
+    .row {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+    .row div {
+      flex: 1;
+    }
 
-/* Preview image */
-.preview img {
-  margin-top: 18px;
-  max-width: 220px;
-  border: 3px solid #13007d;
-  border-radius: 8px;
-}
+    /* Camera */
+    .camera-container {
+      display: flex;
+      justify-content: center;
+      margin: 20px 0;
+    }
+
+    #camera {
+      width: 100%;
+      max-width: 400px;
+      border-radius: 8px;
+      border: 2px solid #13007d;
+    }
+
+    /* Preview image */
+    .preview img {
+      margin-top: 18px;
+      max-width: 220px;
+      border: 3px solid #13007d;
+      border-radius: 8px;
+    }
+
+    /* Summary section */
+    #summary {
+      display: none;
+      background: rgba(255, 255, 255, 0.364);
+      padding: 25px 30px;
+      border-radius: 12px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.3);
+      margin-top: 20px;
+      color: #13007d;
+      font-size: 1.15rem;
+    }
+
+    #summary h2 {
+      font-size: 2rem;
+      text-align: center;
+      margin-bottom: 15px;
+    }
+
+    #summary ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    #summary ul li {
+      margin-bottom: 12px;
+      line-height: 1.4;
+    }
+
+    #summary ul li img {
+      display: block;
+      margin: 10px auto 0 auto;
+      max-width: 220px;
+      border: 3px solid #13007d;
+      border-radius: 8px;
+    }
+
+    /* Summary buttons */
+    .summary-buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+      gap: 15px;
+    }
+
+    .summary-buttons button {
+      flex: 1;
+      padding: 14px;
+      font-size: 1.15rem;
+      border-radius: 8px;
+      border: 2px solid #13007d;
+      background: #fff;
+      color: #13007d;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .summary-buttons button:hover {
+      background: #13007d;
+      color: #fff;
+      border-color: #0d0060;
+    }
