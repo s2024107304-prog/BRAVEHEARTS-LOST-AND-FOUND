@@ -1,4 +1,12 @@
-/* Video background */
+/* General Body */
+body {
+  font-family: Arial, sans-serif;
+  background: #f2f2f2;
+  margin: 0;
+  padding: 0;
+}
+
+/* Video Background */
 .video-background {
   position: fixed;
   top: 0;
@@ -6,167 +14,120 @@
   width: 100%;
   height: 100%;
   z-index: -2;
+  overflow: hidden;
 }
 .video-background video {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
+
+/* Overlay on video */
 .overlay {
   position: fixed;
-  top:0; left:0; width:100%; height:100%;
-  background: rgba(255,255,255,0.2);
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3);
   z-index: -1;
 }
 
 /* Card container */
 .card {
-  max-width: 1200px;
+  max-width: 900px;
   margin: 50px auto;
-  background: rgba(255, 255, 255, 0.85);
-  padding: 25px 30px;
+  padding: 20px;
   border-radius: 12px;
-  box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  background: white;
+}
+
+/* Headings */
+h2 {
+  text-align: center;
   color: #13007d;
-  font-family: Arial, sans-serif;
 }
 
 /* Grid for reports */
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 15px;
   margin-top: 20px;
 }
 
-/* Each report as a box */
+/* Individual report card */
 .report-card {
-  border: 2px solid rgba(19,0,125,0.6);
-  border-radius: 12px;
-  padding: 14px 18px;
-  background: rgba(255,255,255,0.6);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  background: #f9f9f9;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 10px;
   cursor: pointer;
-  transition: 0.3s;
+  transition: 0.2s;
 }
 .report-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
-/* Title and summary */
+/* Report text */
 .report-title {
   font-weight: bold;
-  font-size: 1.1rem;
   color: #13007d;
-  margin-bottom: 6px;
+  margin-bottom: 5px;
 }
 .report-summary {
-  font-size: 0.95rem;
-  color: #222;
-  max-height: 40px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-/* Modal */
-.modal {
-  display: none;
-  position: fixed;
-  z-index: 1000;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(0,0,0,0.6);
-  justify-content: center;
-  align-items: center;
-}
-.modal-content {
-  background: #fff;
-  padding: 25px 30px;
-  border-radius: 12px;
-  max-width: 700px;
-  width: 90%;
-  max-height: 90%;
-  overflow-y: auto;
-  position: relative;
-  box-shadow: 0 6px 16px rgba(0,0,0,0.3);
-}
-.modal-content h3 {
-  color: #13007d;
-  margin-top: 0;
-  margin-bottom: 12px;
-  font-size: 1.4rem;
-  border-bottom: 1px solid #13007d;
-  padding-bottom: 6px;
-}
-.modal-content ul {
-  list-style: none;
-  padding: 0;
-}
-.modal-content ul li {
-  margin-bottom: 10px;
-}
-.modal-content img {
-  max-width: 100%;
-  border: 2px solid #13007d;
-  border-radius: 8px;
-  margin-top: 8px;
-}
-
-/* Modal close button */
-.close-btn {
-  position: absolute;
-  top: 15px; right: 20px;
-  padding: 8px 16px;
-  border-radius: 8px;
-  background: #13007d;
-  color: #fff;
-  border: none;
-  cursor: pointer;
-  font-weight: bold;
-  transition: 0.2s;
-}
-.close-btn:hover {
-  background: #0d0060;
-  transform: scale(1.05);
-}
-
-/* Delete button inside modal */
-.delete-btn {
-  margin-top: 15px;
-  padding: 10px 16px;
-  border-radius: 8px;
-  border: none;
-  font-weight: bold;
-  color: #fff;
-  background: #ff4d4d;
-  cursor: pointer;
-  transition: 0.2s;
-}
-.delete-btn:hover {
-  background: #cc0000;
-  transform: scale(1.05);
+  font-size: 14px;
+  margin-bottom: 3px;
 }
 
 /* Submit another report button */
 #submitAnother {
   margin-top: 20px;
-  padding: 12px 18px;
-  border-radius: 10px;
+  padding: 12px 20px;
   border: none;
-  font-weight: bold;
-  font-size: 1rem;
-  color: #fff;
+  border-radius: 8px;
   background: #13007d;
+  color: white;
+  font-weight: bold;
   cursor: pointer;
-  transition: 0.3s;
-}
-#submitAnother:hover {
-  background: #0d0060;
-  transform: scale(1.03);
 }
 
-
-
-
-
+/* Modal styling */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  justify-content: center;
+  align-items: center;
+}
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  max-width: 600px;
+  max-height: 80%;
+  overflow-y: auto;
+  position: relative;
+}
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  background: #13007d;
+  color: white;
+  cursor: pointer;
+}
+.modal img {
+  max-width: 100%;
+  margin-top: 10px;
+  border: 2px solid #13007d;
+  border-radius: 8px;
+}
