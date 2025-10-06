@@ -1,165 +1,70 @@
-/* Reset & general */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
+/* General reset */
 body {
   font-family: Arial, sans-serif;
   background: #f2f2f2;
-  position: relative;
-  min-height: 100vh;
+  margin: 0;
+  padding: 0;
 }
 
 /* Video background */
 .video-background {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -2;
-  overflow: hidden;
+  top:0; left:0; width:100%; height:100%; z-index:-1; overflow:hidden;
 }
-
 .video-background video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.overlay {
-  position: fixed;
-  top:0; left:0;
   width:100%;
   height:100%;
-  background: rgba(0,0,0,0.3);
-  z-index:-1;
+  object-fit:cover;
 }
 
-/* Card */
+/* Card styling */
 .card {
-  background: rgba(255, 255, 255, 0.35);
-  backdrop-filter: blur(5px); /* glassy effect */
-  max-width: 600px;
-  margin: 50px auto;
-  padding: 25px 20px;
-  border-radius: 15px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  background:white;
+  max-width:600px;
+  margin:50px auto;
+  padding:20px;
+  border-radius:12px;
+  box-shadow:0 4px 15px rgba(0,0,0,0.2);
 }
 
 /* Headings */
-h2 {
-  text-align: center;
-  color: #13007d;
-  margin-bottom: 10px;
-}
-.note {
-  text-align: center;
-  margin-bottom: 15px;
-  font-size: 14px;
-  color: #333;
-}
+h2 { text-align:center; color:#13007d; }
+.note { text-align:center; margin-bottom:15px; }
 
-/* Form inputs */
-label {
-  display: block;
-  margin-top: 12px;
-  font-weight: bold;
-}
+/* Form labels and inputs */
+label { display:block; margin-top:12px; font-weight:bold; }
+input, textarea { width:100%; padding:8px; margin-top:4px; border-radius:6px; border:1px solid #ccc; }
 
-input, textarea {
-  width: 100%;
-  padding: 10px;
-  margin-top: 4px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  font-size: 14px;
-}
-
-textarea {
-  resize: vertical;
-}
-
-/* Row for multiple inputs */
-.row {
-  display: flex;
-  gap: 10px;
-  margin-top: 5px;
-}
-.row > div {
-  flex: 1;
-}
+/* Row for two inputs */
+.row { display:flex; gap:10px; }
+.row > div { flex:1; }
 
 /* Camera */
-.camera-container {
-  margin-top: 15px;
-  text-align: center;
-  position: relative;
-}
-
-#camera {
-  width: 100%;
-  max-width: 400px;
-  border: 3px solid #13007d;
-  border-radius: 10px;
-  background: black;
-}
-
-#snapshot {
-  display: none;
-}
-
-.preview img {
-  max-width: 220px;
-  border: 3px solid #13007d;
-  border-radius: 8px;
-  margin-top: 10px;
-}
+.camera-container { margin-top:15px; text-align:center; }
+#snapshot { display:none; }
+.preview img { max-width:220px; border:3px solid #13007d; border-radius:8px; margin-top:10px; }
 
 /* Buttons */
 button {
-  padding: 12px 20px;
-  margin-top: 15px;
-  border: none;
-  border-radius: 8px;
-  background: #13007d;
-  color: white;
-  font-weight: bold;
-  cursor: pointer;
-  transition: 0.3s ease;
+  padding:12px 20px;
+  margin-top:15px;
+  border:none;
+  border-radius:8px;
+  background:#13007d;
+  color:white;
+  font-weight:bold;
+  cursor:pointer;
+  transition:0.3s ease;
 }
+button:hover { background:#0f0065; }
 
-button:hover {
-  background: #0f0065;
-  transform: scale(1.03);
-}
-
-/* Summary box */
-#summary {
-  text-align: left;
-  margin-top: 20px;
-  font-size: 14px;
-  color: #333;
-}
-
-#summary img {
-  max-width: 300px;
-  border: 2px solid #13007d;
-  border-radius: 8px;
-  margin-top: 10px;
-}
+/* Summary */
+#summary { text-align:left; margin-top:20px; }
 
 /* Bottom small buttons */
 .report-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 15px;
-  margin-top: 15px;
-}
-
-.report-buttons button {
-  padding: 6px 12px;
-  font-size: 14px;
+  display:flex;
+  justify-content:center;
+  gap:15px;
+  margin-top:10px;
 }
