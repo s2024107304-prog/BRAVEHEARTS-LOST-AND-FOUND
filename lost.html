@@ -3,22 +3,6 @@
 <head>
   <title>Lost Items - Bravehearts Lost & Found</title>
   <link rel="stylesheet" type="text/css" href="lost.css">
-  <style>
-    body { font-family: Arial, sans-serif; background:#f2f2f2; margin:0; padding:0;}
-    .video-background { position:fixed; top:0; left:0; width:100%; height:100%; z-index:-1; overflow:hidden; }
-    .video-background video { width:100%; height:100%; object-fit:cover; }
-    .card { background:white; max-width:600px; margin:50px auto; padding:20px; border-radius:12px; box-shadow:0 4px 15px rgba(0,0,0,0.2);}
-    h2 { text-align:center; color:#13007d; }
-    label { display:block; margin-top:12px; font-weight:bold; }
-    input, textarea { width:100%; padding:8px; margin-top:4px; border-radius:6px; border:1px solid #ccc; }
-    .row { display:flex; gap:10px; }
-    .row > div { flex:1; }
-    button { padding:12px 20px; margin-top:15px; border:none; border-radius:8px; background:#13007d; color:white; font-weight:bold; cursor:pointer; }
-    .camera-container { margin-top:15px; text-align:center; }
-    #snapshot { display:none; }
-    .preview img { max-width:220px; border:3px solid #13007d; border-radius:8px; margin-top:10px; }
-    #summary { text-align:left; margin-top:20px; }
-  </style>
 </head>
 <body>
 
@@ -78,82 +62,12 @@
 
   <div id="summary" style="display:none;"></div>
 
-  <div style="display:flex; justify-content:center; gap:15px; margin-top:10px;">
+  <div class="report-buttons">
     <button id="submitAgain" style="display:none;">Submit Another Report</button>
     <button id="viewReports" style="display:none;">View All Reports</button>
   </div>
 </div>
 
-<script>
-const form = document.getElementById('lostForm');
-const camera = document.getElementById('camera');
-const takePic = document.getElementById('takePic');
-const snapshot = document.getElementById('snapshot');
-const preview = document.getElementById('preview');
-const photoBase64Input = document.getElementById('photo_base64');
-const summary = document.getElementById('summary');
-const submitAgain = document.getElementById('submitAgain');
-const viewReports = document.getElementById('viewReports');
-const backBtn = document.getElementById('backBtn');
-
-// Back button
-backBtn.addEventListener('click', () => window.history.back());
-
-// Open camera
-navigator.mediaDevices.getUserMedia({ video: true })
-  .then(stream => { camera.srcObject = stream; })
-  .catch(err => console.error('Camera error:', err));
-
-// Take picture
-takePic.addEventListener('click', () => {
-  const ctx = snapshot.getContext('2d');
-  snapshot.width = camera.videoWidth;
-  snapshot.height = camera.videoHeight;
-  ctx.drawImage(camera, 0, 0);
-  const dataUrl = snapshot.toDataURL('image/png');
-  photoBase64Input.value = dataUrl;
-  preview.innerHTML = `<img src="${dataUrl}" alt="Snapshot">`;
-});
-
-// Submit to Google Sheets
-form.addEventListener('submit', (e) => {
-  e.preventDefault();
-  const fd = new FormData(form);
-  const report = {};
-  ['email','what','when','where','who','otherw','description','photo_base64'].forEach(k => {
-    report[k] = fd.get(k) || '';
-  });
-
-  fetch("https://script.google.com/macros/s/AKfycbzcaarGQM3riZ5RVnsVBhzHytK9PSCaJwUe2C0YnThymvw_9SJcFNI7HN2k7yLIi9fJ/exec", {
-    method: "POST",
-    body: new URLSearchParams(report)
-  })
-  .then(resp => resp.text())
-  .then(data => {
-    console.log(data);
-    form.style.display = 'none';
-    preview.innerHTML = '';
-    summary.style.display = 'block';
-    summary.innerHTML = "<h2>Report Summary</h2><ul>" +
-      Object.keys(report).map(k => {
-        if(k === 'photo_base64') return `<li><strong>Photo:</strong><br><img src="${report[k]}" style="max-width:300px;border:2px solid #13007d;border-radius:8px;"></li>`;
-        else return `<li><strong>${k}:</strong> ${report[k]}</li>`;
-      }).join('') +
-      "</ul><p style='color:green;font-weight:bold;'>Report sent. Thank you!</p>";
-
-    submitAgain.style.display = 'inline-block';
-    viewReports.style.display = 'inline-block';
-  })
-  .catch(err => alert("Error sending report: " + err));
-});
-
-// Buttons behavior
-submitAgain.addEventListener('click', () => window.location.reload());
-viewReports.addEventListener('click', () => window.location.href = 'lostreport.html');
-</script>
-
+<script src="lost.js"></script>
 </body>
 </html>
-
-
-
