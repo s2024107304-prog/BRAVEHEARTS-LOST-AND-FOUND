@@ -15,6 +15,7 @@ body {
   justify-content: center;
   overflow: hidden;
   position: relative;
+  text-align: center;
 }
 
 /* Video background */
@@ -41,7 +42,7 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, rgba(0, 0, 0, 0,), rgba(0, 0, 0, 0,));
+  background: linear-gradient(135deg, rgba(0,0,0,0), rgba(0,0,0,0));
   z-index: -1;
 }
 
@@ -52,20 +53,16 @@ h1 {
   margin-bottom: 30px;
   font-size: 3rem;
   letter-spacing: 2px;
-  text-align: center;
 }
 
-.highlight {
-  color: orange; /* Makes Bravehearts Lost & Found orange */
-}
-
-/* Locker box buttons */
+/* Big buttons container */
 .locker-box {
   display: flex;
   gap: 25px;
-  margin-bottom: 40px;
+  margin-bottom: 5px; /* small gap to small buttons */
 }
-/* Buttons - faded gradient */
+
+/* Big buttons */
 button {
   width: 350px;
   height: 270px;
@@ -80,49 +77,43 @@ button {
   box-shadow: 0px 6px 12px rgba(0,0,0,0.2);
 }
 
-/* Individual button hover - more subtle fade effect */
 button:hover {
   background: linear-gradient(135deg, rgba(0,45,225,0.7), rgba(1,1,160,0.7), rgba(19,0,125,0.7));
   transform: scale(1.05);
   box-shadow: 0px 8px 15px rgba(0,0,0,0.25);
 }
 
-/* Optional - fade specific first three buttons if needed */
+/* Optional - fade specific first three buttons */
 button:nth-child(1),
 button:nth-child(2),
 button:nth-child(3) {
   background: linear-gradient(135deg, rgba(19,0,125,0.6), rgba(1,1,160,0.6), rgba(0,45,225,0.6));
 }
 
-/* Content box with faded background */
-.content-box {
-  background: rgba(255, 255, 255, 0.15); /* more transparent */
-  padding: 30px;
-  border-radius: 15px;
-  color: white;
-  max-width: 700px;
-  text-align: center;
-  box-shadow: 0px 8px 20px rgba(0,0,0,0.2);
-  backdrop-filter: blur(5px); /* optional: adds glassy fade effect */
-  border: 1px solid rgba(255,255,255,0.3); /* subtle border for fade */
-}
-.view-reports {
-  text-align: center;
-  margin-top: 15px;
+/* Small buttons container (side by side) */
+.view-reports-container {
+  display: flex;
+  gap: 10px;          /* space between small buttons */
+  justify-content: center; /* center horizontally */
+  margin-top: 5px;    /* small gap from big buttons */
 }
 
+/* Small "View All Reports" buttons */
 .small-btn {
-  padding: 6px 12px;
-  font-size: 14px;
+  padding: 15px 21px;       /* compact padding */
+  font-size: 13px;         /* smaller text than big buttons */
   border: none;
-  border-radius: 6px;
+  border-radius: 5px;
   background-color: #13007d;
   color: white;
   cursor: pointer;
+  width: auto;             /* size fits text */
+  height: auto;            /* ensure it doesn't inherit big button height */
+  line-height: normal;
+  transition: 0.3s ease;
 }
 
 .small-btn:hover {
   background-color: #0f0065;
+  transform: scale(1.05);
 }
-
-
