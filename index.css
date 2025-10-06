@@ -106,3 +106,23 @@ button:nth-child(3) {
   backdrop-filter: blur(5px); /* optional: adds glassy fade effect */
   border: 1px solid rgba(255,255,255,0.3); /* subtle border for fade */
 }
+.view-reports {
+  text-align: center;
+  margin-top: 15px;
+}
+
+.small-btn {
+  padding: 6px 12px;
+  font-size: 14px;
+  border: none;
+  border-radius: 6px;
+  background-color: #13007d;
+  color: white;
+  cursor: pointer;
+}
+
+.small-btn:hover {
+  background-color: #0f0065;
+}
+
+
